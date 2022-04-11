@@ -45,7 +45,7 @@ whiptail --title "Scrollbox" --scrolltext --msgbox "$(ls)" 10 60 0
 
 (
 msgs=( "Preparing install..." "Starting Cura installation..." "Cura installation completed successfully" "Starting FreeCad installation..." "FreeCad installation completed successfully" "Starting inkscape installation..." "inkscape installation completed successfully" "Starting imagemagick installation..." "imagemagick installation completed successfully" )
-items=$(
+commands=$(
         {
             #echo "Preparing install..."
             sudo apt-get update -y
@@ -69,23 +69,38 @@ items=$(
             sudo echo "ok inkscape" > okinkscape.log
             
             #echo "Starting imagemagick installation..."
-            sudo apt install imagemagick -y
+            sudo apt-get install imagemagick -y
             
             #echo "imagemagick installation completed successfully"
             sudo echo "ok imagemagick" > okimagemagick.log
             
         } | wc -l)
-processed=0
-while [ $processed -le $items ]; do
-    pct=$(( $processed * 100 / $items ))
-    echo "***"
-    echo $processed
-    echo ${msgs["$processed"]}
-    echo ***
-    echo "$pct"
-    processed=$((processed+1))
+n=${#commands[@]}
+i=0
+while [ "$i" -lt "$n" ]; do
+    pct=$(( i * 100 / n ))
+    echo XXX 
+    echo $i 
+    echo "${msgs[i]}" 
+    echo XXX 
+    echo "$pct" 
+    eval "${commands[i]}" 
+    i=$((i + 1)) 
     sleep 1
-done
+done    
+    
+# while [ $processed -le $items ]; do
+#    pct=$(( $processed * 100 / $items ))
+#    echo "***"
+#    echo $processed
+#    echo ${msgs["$processed"]}
+#    echo ***
+#    echo "$pct"
+#    processed=$((processed+1))
+#    sleep 1
+# done
+
+
 ) | whiptail --title "Gauge" --gauge "Please wait..." 10 60 0
 
 
