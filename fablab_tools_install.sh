@@ -43,38 +43,38 @@ whiptail --title "Scrollbox" --scrolltext --msgbox "$(ls)" 10 60 0
 
 
 
-(
+
 msgs=( "Preparing install..." "Starting Cura installation..." "Cura installation completed successfully" "Starting FreeCad installation..." "FreeCad installation completed successfully" "Starting inkscape installation..." "inkscape installation completed successfully" "Starting imagemagick installation..." "imagemagick installation completed successfully" )
-commands=$(
-        {
+commands=(
+        
             #echo "Preparing install..."
-            sudo apt-get update -y
+            "sudo apt-get update -y"
             
             #echo "Starting Cura installation..."
-            sudo apt-get install cura -y
+            "sudo apt-get install cura -y"
             
             #echo "Cura installation completed successfully"
-            sudo echo "ok cura" > okcura.log 
+            "sudo echo 'ok cura' > okcura.log" 
             
             #echo "Starting FreeCad installation..."
-            sudo apt-get install freecad -y
+            "sudo apt-get install freecad -y"
             
             #echo "FreeCad installation completed successfully"
-            sudo echo "ok freecad" > okfreecad.log 
+            "sudo echo 'ok freecad' > okfreecad.log" 
 
             #echo "Starting inkscape installation..."
-            sudo apt-get install inkscape -y
+            "sudo apt-get install inkscape -y"
             
             #echo "inkscape installation completed successfully"
-            sudo echo "ok inkscape" > okinkscape.log
+            "sudo echo 'ok inkscape' > okinkscape.log"
             
             #echo "Starting imagemagick installation..."
-            sudo apt-get install imagemagick -y
+            "sudo apt-get install imagemagick -y"
             
             #echo "imagemagick installation completed successfully"
-            sudo echo "ok imagemagick" > okimagemagick.log
+            "sudo echo 'ok imagemagick' > okimagemagick.log"
             
-        } | wc -l)
+         )
 n=${#commands[@]}
 i=0
 while [ "$i" -lt "$n" ]; do
@@ -87,7 +87,7 @@ while [ "$i" -lt "$n" ]; do
     eval "${commands[i]}" 
     i=$((i + 1)) 
     sleep 1
-done    
+done | whiptail --title "installation Fablab Tools" --gauge "Please wait..." 10 60 0
     
 # while [ $processed -le $items ]; do
 #    pct=$(( $processed * 100 / $items ))
@@ -100,7 +100,7 @@ done
 #    sleep 1
 # done
 
-
-) | whiptail --title "Gauge" --gauge "Please wait..." 10 60 0
+sleep 1
+whiptail --title "Scrollbox" --scrolltext --msgbox "installation completed successfully" 10 60 0
 
 
